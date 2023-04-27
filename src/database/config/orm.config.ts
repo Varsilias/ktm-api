@@ -1,10 +1,10 @@
-import { DataSourceOptions } from 'typeorm';
+import { DataSourceOptions, DatabaseType } from 'typeorm';
 import { ConfigService } from '../../config/config.service';
 
 const config = new ConfigService();
 
 export const ormConfig: DataSourceOptions = {
-  type: 'mysql',
+  type: config.DB_TYPE as unknown as 'postgres', // change to database vendor of choice
   ...(config.inProduction
     ? { url: config.DB_URL }
     : {
@@ -16,5 +16,5 @@ export const ormConfig: DataSourceOptions = {
       }),
   entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
   synchronize: config.DB_SYNC,
-  logging: !config.inProduction ? ['error', 'migration', 'warn'] : false,
+  logging: !config.inProduction ? ['error', 'migration', 'warn'] : true,
 };

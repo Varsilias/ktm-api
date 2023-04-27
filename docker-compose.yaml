@@ -2,36 +2,41 @@ version: '3.9'
 
 services:
   postgres:
-    image: postgres:latest
+    container_name: postgres
+    image: postgres:15.2
     restart: always
-    networks:
-      - ktm_network
-    volumes:
-      - ./data/pgsql:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
       POSTGRES_USER: $DB_USER
-    ports:
-      - '$DB_PORT:$DB_PORT'
 
-  pgadmin:
-    image: dpage/pgadmin4:7.0
-    depends_on:
-      - postgres
     networks:
       - ktm_network
     volumes:
-      - ./data/pgadmin:/var/lib/pgadmin
+      - db-data:/var/lib/postgresql/data
     ports:
-      - '8080:8080'
+      - '$DB_PORT:5432'
+
+  pgadmin:
+    links:
+      - postgres:postgres
+    container_name: pgadmin
+    image: dpage/pgadmin4:7.0
+    depends_on:
+      - postgres
+    env_file:
+      - .env
     environment:
       PGADMIN_DEFAULT_EMAIL: daniel@email.com
       PGADMIN_DEFAULT_PASSWORD: P@ssword1234
-    env_file:
-      - .env
+    networks:
+      - ktm_network
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - '8080:80'
 
   # ktmcore:
   #   image: ktmcore:1.0.0
@@ -47,3 +52,6 @@ services:
 networks:
   ktm_network:
     driver: bridge
+volumes:
+  db-data:
+  pgadmin-data:

@@ -25,6 +25,7 @@ const EnvSchema = Joi.object({
   DB_USER: Joi.string(),
   DB_PASSWORD: Joi.string(),
   DB_HOST: Joi.string(),
+  DB_TYPE: Joi.string(),
   //   DB_MIGRATIONS: Joi.string(),
   //   DB_ALLOW_REFRESH: Joi.boolean(),
   //   DB_TRUST_CERT: Joi.boolean(),
@@ -100,5 +101,9 @@ export class ConfigService {
 
   get DB_SYNC() {
     return /(true|on|1)/gi.test(this.envConfig.DB_SYNC);
+  }
+
+  get DB_TYPE() {
+    return this.envConfig.DB_TYPE;
   }
 }
