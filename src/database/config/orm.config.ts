@@ -1,4 +1,4 @@
-import { DataSourceOptions, DatabaseType } from 'typeorm';
+import { DataSource, DataSourceOptions, DatabaseType } from 'typeorm';
 import { ConfigService } from '../../config/config.service';
 
 const config = new ConfigService();
@@ -17,4 +17,7 @@ export const ormConfig: DataSourceOptions = {
   entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
   synchronize: config.DB_SYNC,
   logging: !config.inProduction ? ['error', 'migration', 'warn'] : true,
+  migrations: [__dirname + '/../migrations/**{.ts,.js}'],
 };
+
+export const AppDataSource = new DataSource(ormConfig);
