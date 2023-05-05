@@ -1,26 +1,62 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from '../dto/create-auth.dto';
-import { UpdateAuthDto } from '../dto/update-auth.dto';
+import { SignInDto, SignUpDto } from '../dto';
+import { Utils } from 'src/common/utils';
+import { UserService } from 'src/api/user/services/user.service';
+import { PostgresError } from 'src/common/helpers/enum';
+import { ConflictException } from 'src/common/exceptions/conflict.exception';
+import { ServerErrorException } from 'src/common/exceptions/server-error.exception';
+import { JwtService } from '@nestjs/jwt';
+import { BadRequestException } from 'src/common/exceptions/bad-request.exception';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
+  async signUp(signUpDto: SignUpDto) {
+    try {
+      const { password: userPasssword } = signUpDto;
+      const hash = await Utils.hashPassword(userPasssword);
+      const { password, ...user } = await this.userService.createUser({
+        ...signUpDto,
+        password: hash,
+      });
+      return user;
+    } catch (error: any) {
+      console.log(error);
+      if (error?.code === PostgresError.UNIQUE_CONSTRAINT_VIOLATION) {
+        throw new ConflictException('Email already taken', null);
+      }
+      throw new ServerErrorException('Something went wrong', null);
+    }
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async signIn(signInDto: SignInDto) {
+    const { email, password: userPassword } = signInDto;
+    const user = await this.userService.findUserBy({ where: { email } });
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    if (!user) {
+      throw new BadRequestException('Email or Password Incorrect');
+    }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+    const isPasswordMatch = await Utils.comparePassword(
+      userPassword,
+      user.password,
+    );
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    if (!isPasswordMatch) {
+      throw new BadRequestException('Email or Password Incorrect');
+    }
+
+    const payload = {
+      sub: user.publicId,
+      email: user.email,
+    };
+
+    const accessToken = await this.jwtService.signAsync(payload);
+    const { password, ...data } = user;
+
+    return { access_token: accessToken, user: data };
   }
 }

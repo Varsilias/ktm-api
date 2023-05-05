@@ -25,7 +25,7 @@ export class BaseEntity<T = any> {
   isBlocked!: boolean;
 
   // Nice columns for internal statistics and diagnostics
-  @CreateDateColumn({ type: 'timestamptz', nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
   @Exclude()
   blockedAt: Date;
 
@@ -58,7 +58,6 @@ export class BaseEntity<T = any> {
   // Nice columns for internal statistics and diagnostics
   @DeleteDateColumn({
     type: 'timestamptz',
-    default: () => 'LOCALTIMESTAMP',
     nullable: true,
     comment: 'Entity Deleted At',
   })

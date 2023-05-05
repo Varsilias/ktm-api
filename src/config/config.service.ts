@@ -26,6 +26,8 @@ const EnvSchema = Joi.object({
   DB_PASSWORD: Joi.string(),
   DB_HOST: Joi.string(),
   DB_TYPE: Joi.string(),
+  JWT_SECRET: Joi.string(),
+  JWT_EXPIRY: Joi.number(),
   //   DB_MIGRATIONS: Joi.string(),
   //   DB_ALLOW_REFRESH: Joi.boolean(),
   //   DB_TRUST_CERT: Joi.boolean(),
@@ -105,5 +107,13 @@ export class ConfigService {
 
   get DB_TYPE() {
     return this.envConfig.DB_TYPE;
+  }
+
+  get JWT_SECRET() {
+    return this.envConfig.JWT_SECRET;
+  }
+
+  get JWT_EXPIRY() {
+    return this.envConfig.JWT_EXPIRY;
   }
 }
