@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { BoardEntity } from 'src/api/board/entities/board.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity<UserEntity> {
@@ -14,6 +15,7 @@ export class UserEntity extends BaseEntity<UserEntity> {
   email: string;
 
   @Column({ type: 'varchar' })
+  @Exclude()
   password: string;
 
   @Column({ default: false })
@@ -30,4 +32,7 @@ export class UserEntity extends BaseEntity<UserEntity> {
   })
   @Exclude()
   securityTokenRequestedAt: Date;
+
+  @OneToMany(() => BoardEntity, (boards) => boards.user)
+  boards: BoardEntity[];
 }

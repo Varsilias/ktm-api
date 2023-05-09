@@ -4,4 +4,5 @@ export enum AppStatus {
 
 export enum PostgresError {
   UNIQUE_CONSTRAINT_VIOLATION = '23505',
+  INVALID_INPUT_SYNTAX = '22P02',
 }

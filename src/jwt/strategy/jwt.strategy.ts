@@ -31,10 +31,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     return {
-      tokenObj: {
-        publicId: payload.sub,
-        email: payload.email,
-      },
+      // tokenObj: {
+      //   publicId: payload.sub,
+      //   email: payload.email,
+      // },
       ...user,
     };
   }
