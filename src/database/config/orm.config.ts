@@ -16,7 +16,7 @@ export const ormConfig: DataSourceOptions = {
       }),
   entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
   synchronize: config.DB_SYNC,
-  logging: !config.inProduction ? ['error', 'migration', 'warn'] : true,
+  logging: !config.inProduction ? ['error', 'migration', 'warn'] : false,
   migrations: [__dirname + '/../migrations/**{.ts,.js}'],
 };
 

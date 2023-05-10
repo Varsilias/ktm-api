@@ -8,6 +8,5 @@ import { ColumnModule } from '../column/column.module';
   imports: [ColumnModule],
   controllers: [BoardController],
   providers: [BoardService, BoardRepository],
-  exports: [BoardService],
 })
 export class BoardModule {}

@@ -9,10 +9,19 @@ export class ColumnRepository extends Repository<ColumnEntity> {
     super(ColumnEntity, datasource.createEntityManager());
   }
 
+  async getAllColumnsForBoard(board: BoardEntity) {
+    return this.createQueryBuilder()
+      .select('column')
+      .from(ColumnEntity, 'column')
+      .where('column.board = :id', { id: board.id })
+      .getMany();
+  }
+
   async getOne(publicId: string, board: BoardEntity) {
     return this.createQueryBuilder()
       .select('column')
       .from(ColumnEntity, 'column')
+      .leftJoinAndSelect('column.board', 'board')
       .where('column.board = :id', { id: board.id })
       .andWhere('column.publicId = :publicId', { publicId })
       .getOne();

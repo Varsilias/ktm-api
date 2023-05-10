@@ -3,11 +3,12 @@ import { CreateBoardDto } from '../dto/create-board.dto';
 import { UpdateBoardDto } from '../dto/update-board.dto';
 import { BoardRepository } from '../repositories/board.repository';
 import { IDecoratorUser } from 'src/common/decorators/current-user.decorator';
-import { ColumnService } from 'src/api/column/services/column.service';
 import { DataSource } from 'typeorm';
 import { BadRequestException } from 'src/common/exceptions/bad-request.exception';
 import { ServerErrorException } from 'src/common/exceptions/server-error.exception';
 import { PostgresError } from 'src/common/helpers/enum';
+import { ColumnService } from 'src/api/column/services/column.service';
+import { ColumnEntity } from 'src/api/column/entities/column.entity';
 
 @Injectable()
 export class BoardService {
@@ -23,7 +24,6 @@ export class BoardService {
     await queryRunner.startTransaction();
 
     try {
-      const { columns } = createBoardDto;
       const entity = this.boardRepository.create({
         name: createBoardDto.name,
         user,
@@ -31,21 +31,18 @@ export class BoardService {
 
       const board = await queryRunner.manager.save(entity);
 
-      const result = await Promise.all(
-        columns.map(async (column: string) => {
-          return await this.columnService.create(
-            { name: column },
-            board,
-            queryRunner,
-          );
-        }),
-      );
-
-      board.columns = result;
-
       await queryRunner.commitTransaction();
 
-      return board;
+      const columns = createBoardDto.columns.map((value: string) => {
+        return {
+          name: value,
+          boardPublicId: board.publicId,
+        };
+      });
+
+      const result = await this.columnService.create(columns, user);
+
+      return { board, columns: result };
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw new BadRequestException('Could not create board');
@@ -100,18 +97,16 @@ export class BoardService {
 
       const result = await Promise.all(
         columns.map(async (column) => {
-          return await this.columnService.update(
-            board,
-            { name: column },
-            queryRunner,
-          );
+          return await this.columnService.update(user, {
+            name: column,
+            boardPublicId: board.publicId,
+          });
         }),
       );
 
       await queryRunner.commitTransaction();
 
-      console.log('Result - %o', { board, result });
-      return board;
+      return { board, columns: result };
     } catch (error) {
       // console.log(error);
       await queryRunner.rollbackTransaction();

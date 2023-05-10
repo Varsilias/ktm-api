@@ -21,6 +21,7 @@ export class BoardRepository extends Repository<BoardEntity> {
     return this.createQueryBuilder()
       .select('board')
       .from(BoardEntity, 'board')
+      .leftJoinAndSelect('board.columns', 'columns')
       .where('board.user = :id', { id: user.id })
       .andWhere('board.publicId = :publicId', { publicId })
       .getOne();

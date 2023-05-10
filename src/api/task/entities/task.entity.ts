@@ -6,7 +6,10 @@ import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 @Entity({ name: 'tasks' })
 export class TaskEntity extends BaseEntity {
   @Column({ type: 'varchar' })
-  name: string;
+  title: string;
+
+  @Column({ type: 'varchar', default: '' })
+  description: string;
 
   @ManyToOne(() => ColumnEntity, (column) => column.tasks, {
     onDelete: 'CASCADE',

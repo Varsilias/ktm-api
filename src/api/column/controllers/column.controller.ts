@@ -13,39 +13,41 @@ import {
   IDecoratorUser,
 } from 'src/common/decorators/current-user.decorator';
 import { DeleteColumnDto } from '../dto/delete-column.dto';
-// import { CreateColumnDto } from '../dto/create-column.dto';
+import { GetBoardColumnsDto } from '../dto/get-board-columns.dto';
+import { CreateColumnDto } from '../dto/create-column.dto';
 // import { UpdateColumnDto } from '../dto/update-column.dto';
 
-@Controller('column')
+@Controller('columns')
 export class ColumnController {
   constructor(private readonly columnService: ColumnService) {}
 
-  // @Post()
-  // create(@Body() createColumnDto: CreateColumnDto) {
-  //   return this.columnService.create(createColumnDto);
-  // }
-
-  @Get()
-  findAll(@CurrentUser() user: IDecoratorUser) {
-    return this.columnService.findAll();
+  @Post()
+  create(
+    @Body() createColumnDto: CreateColumnDto,
+    @CurrentUser() user: IDecoratorUser,
+  ) {
+    return this.columnService.create(createColumnDto, user);
   }
 
-  // @Get(':publicId')
-  // findOne(@Param('publicId') id: string) {
-  //   return this.columnService.findOne(id);
-  // }
+  @Get()
+  findAll(
+    @Body() getBoardColumnsDto: GetBoardColumnsDto,
+    @CurrentUser() user: IDecoratorUser,
+  ) {
+    return this.columnService.findAll(getBoardColumnsDto, user);
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateColumnDto: UpdateColumnDto) {
-  //   return this.columnService.update(+id, updateColumnDto);
-  // }
+  @Get(':publicId')
+  findOne(@Param('publicId') publicId: string) {
+    return this.columnService.findOne(publicId);
+  }
 
   @Delete(':publicId')
   remove(
     @Param('publicId') publicId: string,
-    @CurrentUser() user: IDecoratorUser,
     @Body() deletedColumnDto: DeleteColumnDto,
+    @CurrentUser() user: IDecoratorUser,
   ) {
-    return this.columnService.remove(publicId, user, deletedColumnDto);
+    return this.columnService.remove(publicId, deletedColumnDto, user);
   }
 }
