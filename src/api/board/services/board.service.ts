@@ -122,9 +122,13 @@ export class BoardService {
   async remove(publicId: string, user: IDecoratorUser) {
     try {
       const found = await this.findOne(publicId, user);
-      await this.boardRepository.delete({ publicId });
+      const result = await this.boardRepository.delete({ id: found.id });
 
-      return found;
+      if (result.affected <= 0) {
+        throw new BadRequestException('Unable to delete board');
+      }
+
+      return { message: 'Board deleted successfully' };
     } catch (error) {
       if (error instanceof BadRequestException) {
         throw error;

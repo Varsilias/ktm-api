@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
+  Query,
 } from '@nestjs/common';
 import { ColumnService } from '../services/column.service';
 import {
@@ -15,7 +17,7 @@ import {
 import { DeleteColumnDto } from '../dto/delete-column.dto';
 import { GetBoardColumnsDto } from '../dto/get-board-columns.dto';
 import { CreateColumnDto } from '../dto/create-column.dto';
-// import { UpdateColumnDto } from '../dto/update-column.dto';
+import { UpdateColumnDto } from '../dto/update-column.dto';
 
 @Controller('columns')
 export class ColumnController {
@@ -31,15 +33,24 @@ export class ColumnController {
 
   @Get()
   findAll(
-    @Body() getBoardColumnsDto: GetBoardColumnsDto,
+    @Query('boardPublicId') boardPublicId: string,
     @CurrentUser() user: IDecoratorUser,
   ) {
-    return this.columnService.findAll(getBoardColumnsDto, user);
+    return this.columnService.findAll({ boardPublicId }, user);
   }
 
   @Get(':publicId')
   findOne(@Param('publicId') publicId: string) {
     return this.columnService.findOne(publicId);
+  }
+
+  @Put(':publicId')
+  update(
+    @Param('publicId') publicId: string,
+    @CurrentUser() user: IDecoratorUser,
+    updateColumnDto: UpdateColumnDto,
+  ) {
+    return this.columnService.update(user, updateColumnDto, publicId);
   }
 
   @Delete(':publicId')

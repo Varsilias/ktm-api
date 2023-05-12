@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { SubtaskService } from '../services/subtask.service';
 import { CreateSubtaskDto } from '../dto/create-subtask.dto';
 import { UpdateSubtaskDto } from '../dto/update-subtask.dto';
+import { DeleteSubtaskDto } from '../dto/delete-subtask.dto';
+import { GetSubtasksDto } from '../dto/get-subtask.dto';
 
 @Controller('subtask')
 export class SubtaskController {
@@ -21,22 +24,28 @@ export class SubtaskController {
   }
 
   @Get()
-  findAll() {
-    return this.subtaskService.findAll();
+  findAll(@Query('taskPublicId') taskPublicId: string) {
+    return this.subtaskService.findAll({ taskPublicId });
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subtaskService.findOne(+id);
+  @Get(':publicId')
+  findOne(@Param('publicId') publicId: string) {
+    return this.subtaskService.findOne(publicId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubtaskDto: UpdateSubtaskDto) {
-    return this.subtaskService.update(+id, updateSubtaskDto);
+  @Patch(':publicId')
+  update(
+    @Param('publicId') publicId: string,
+    @Body() updateSubtaskDto: UpdateSubtaskDto,
+  ) {
+    return this.subtaskService.update(updateSubtaskDto, publicId);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subtaskService.remove(+id);
+  @Delete(':publicId')
+  remove(
+    @Param('publicId') publicId: string,
+    @Body() deleteSubtaskDto: DeleteSubtaskDto,
+  ) {
+    return this.subtaskService.remove(publicId, deleteSubtaskDto);
   }
 }

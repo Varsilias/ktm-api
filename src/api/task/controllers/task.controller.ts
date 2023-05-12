@@ -10,6 +10,7 @@ import {
 import { TaskService } from '../services/task.service';
 import { CreateTaskDto } from '../dto/create-task.dto';
 import { UpdateTaskDto } from '../dto/update-task.dto';
+import { GetColumnTasksDto } from '../dto/get-column-tasks.dto';
 
 @Controller('task')
 export class TaskController {
@@ -21,22 +22,25 @@ export class TaskController {
   }
 
   @Get()
-  findAll() {
-    return this.taskService.findAll();
+  findAll(@Body() getColumnTasksDto: GetColumnTasksDto) {
+    return this.taskService.findAll(getColumnTasksDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.taskService.findOne(+id);
+  @Get(':publicId')
+  findOne(@Param('publicId') publicId: string) {
+    return this.taskService.findOne(publicId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.taskService.update(+id, updateTaskDto);
+  @Patch(':publicId')
+  update(
+    @Param('publicId') publicId: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    return this.taskService.update(publicId, updateTaskDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.taskService.remove(+id);
+  @Delete(':publicId')
+  remove(@Param('publicId') publicId: string) {
+    return this.taskService.remove(publicId);
   }
 }

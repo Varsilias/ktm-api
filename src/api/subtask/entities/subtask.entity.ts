@@ -7,7 +7,7 @@ export class SubtaskEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   title: string;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   isCompleted: boolean;
 
   @ManyToOne(() => TaskEntity, (task) => task.subtasks, { onDelete: 'CASCADE' })
