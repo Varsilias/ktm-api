@@ -9,11 +9,13 @@ import { PostgresError } from 'src/common/helpers/enum';
 import { ServerErrorException } from 'src/common/exceptions/server-error.exception';
 import { DeleteSubtaskDto } from '../dto/delete-subtask.dto';
 import { GetSubtasksDto } from '../dto/get-subtask.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class SubtaskService {
   constructor(
     private readonly subtaskRepository: SubtaskRepository,
+    @InjectRepository(TaskEntity)
     private readonly _taskRepository: Repository<TaskEntity>,
   ) {}
   async create(createSubtaskDto: CreateSubtaskDto | Array<CreateSubtaskDto>) {

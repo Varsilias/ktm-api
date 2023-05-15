@@ -6,13 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  Put,
 } from '@nestjs/common';
 import { TaskService } from '../services/task.service';
 import { CreateTaskDto } from '../dto/create-task.dto';
 import { UpdateTaskDto } from '../dto/update-task.dto';
 import { GetColumnTasksDto } from '../dto/get-column-tasks.dto';
 
-@Controller('task')
+@Controller('tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
@@ -22,8 +24,8 @@ export class TaskController {
   }
 
   @Get()
-  findAll(@Body() getColumnTasksDto: GetColumnTasksDto) {
-    return this.taskService.findAll(getColumnTasksDto);
+  findAll(@Query('columnPublicId') columnPublicId: string) {
+    return this.taskService.findAll({ columnPublicId });
   }
 
   @Get(':publicId')
@@ -31,7 +33,7 @@ export class TaskController {
     return this.taskService.findOne(publicId);
   }
 
-  @Patch(':publicId')
+  @Put(':publicId')
   update(
     @Param('publicId') publicId: string,
     @Body() updateTaskDto: UpdateTaskDto,

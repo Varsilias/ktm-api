@@ -118,6 +118,7 @@ export class ColumnService {
 
       return { message: 'Column updated successfully' };
     } catch (error) {
+      console.log(error);
       if (error instanceof BadRequestException) {
         throw error;
       }
@@ -149,18 +150,26 @@ export class ColumnService {
   }
 
   private async getBoard(publicId: string, user: IDecoratorUser) {
-    const board = this._boardRepository
-      .createQueryBuilder()
-      .select('board')
-      .from(BoardEntity, 'board')
-      .where('board.user = :id', { id: user.id })
-      .andWhere('board.publicId = :publicId', { publicId })
-      .getOne();
+    try {
+      const board = await this._boardRepository
+        .createQueryBuilder()
+        .select('board')
+        .from(BoardEntity, 'board')
+        .where('board.user = :id', { id: user.id })
+        .andWhere('board.publicId = :publicId', { publicId })
+        .getOne();
 
-    if (!board) {
-      throw new BadRequestException(`Board does not exists`);
+      if (!board) {
+        throw new BadRequestException(`Board does not exists`);
+      }
+
+      return board;
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      throw new ServerErrorException('Something went wrong');
     }
-
-    return board;
   }
 }

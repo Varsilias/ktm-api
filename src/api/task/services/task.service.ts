@@ -9,12 +9,14 @@ import { BadRequestException } from 'src/common/exceptions/bad-request.exception
 import { PostgresError } from 'src/common/helpers/enum';
 import { ServerErrorException } from 'src/common/exceptions/server-error.exception';
 import { GetColumnTasksDto } from '../dto/get-column-tasks.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly _taskRepository: TaskRepository,
     private readonly subtaskService: SubtaskService,
+    @InjectRepository(ColumnEntity)
     private readonly _columnRepository: Repository<ColumnEntity>,
     private readonly dataSource: DataSource,
   ) {}
@@ -95,13 +97,24 @@ export class TaskService {
       const column = await this.getColumn(columnPublicId);
       const task = await this.findOne(publicId);
 
-      await this._taskRepository.update(
+      // console.log({
+      //   publicId,
+      //   updateTaskDto,
+      //   column,
+      //   task,
+      // });
+
+      const updateResult = await this._taskRepository.update(
         { id: task.id },
-        { title: updateTaskDto.title, column },
+        {
+          title: updateTaskDto.title,
+          description: updateTaskDto.description,
+          column,
+        },
       );
 
       const result = await Promise.all(
-        subtasks.map(async (subtask) => {
+        subtasks?.map(async (subtask) => {
           return await this.subtaskService.update({
             title: subtask,
             taskPublicId: task.publicId,
@@ -118,7 +131,9 @@ export class TaskService {
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new BadRequestException('Could not update board');
+
+      console.log(error);
+      throw new BadRequestException('Could not update task');
     } finally {
       await queryRunner.release();
     }

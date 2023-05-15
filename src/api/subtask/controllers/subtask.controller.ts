@@ -7,14 +7,14 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { SubtaskService } from '../services/subtask.service';
 import { CreateSubtaskDto } from '../dto/create-subtask.dto';
 import { UpdateSubtaskDto } from '../dto/update-subtask.dto';
 import { DeleteSubtaskDto } from '../dto/delete-subtask.dto';
-import { GetSubtasksDto } from '../dto/get-subtask.dto';
 
-@Controller('subtask')
+@Controller('subtasks')
 export class SubtaskController {
   constructor(private readonly subtaskService: SubtaskService) {}
 
@@ -33,7 +33,7 @@ export class SubtaskController {
     return this.subtaskService.findOne(publicId);
   }
 
-  @Patch(':publicId')
+  @Put(':publicId')
   update(
     @Param('publicId') publicId: string,
     @Body() updateSubtaskDto: UpdateSubtaskDto,

@@ -48,7 +48,7 @@ export class ColumnController {
   update(
     @Param('publicId') publicId: string,
     @CurrentUser() user: IDecoratorUser,
-    updateColumnDto: UpdateColumnDto,
+    @Body() updateColumnDto: UpdateColumnDto,
   ) {
     return this.columnService.update(user, updateColumnDto, publicId);
   }

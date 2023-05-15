@@ -8,9 +8,10 @@ import {
 } from 'class-validator';
 
 export class UpdateTaskDto {
+  @IsOptional()
   @IsString({ message: '"title" must be a string' })
   @IsNotEmpty({ message: 'Please provide a title for the task' })
-  title: string;
+  title?: string;
 
   @IsOptional()
   @IsString({ message: '"description" must be a string' })
