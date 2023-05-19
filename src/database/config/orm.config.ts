@@ -38,6 +38,6 @@ export const ormConfig = {
     ? ['error', 'migration', 'warn']
     : false,
   migrations: [__dirname + '/../migrations/**{.ts,.js}'],
-};
+} as DataSourceOptions;
 
-export const AppDataSource = new DataSource(ormConfig as DataSourceOptions);
+export const AppDataSource = new DataSource(ormConfig);
