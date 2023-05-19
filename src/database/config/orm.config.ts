@@ -21,16 +21,16 @@ const config = new ConfigService();
 //   migrations: [__dirname + '/../migrations/**{.ts,.js}'],
 // };
 
-export const ormConfig: DataSourceOptions = {
+export const ormConfig = {
   type: process.env.DB_TYPE as unknown as 'postgres', // change to database vendor of choice
   ...(process.env.NODE_ENV === 'production'
     ? { url: process.env.DB_URL }
     : {
-        username: config.DB_USER,
-        host: config.DB_HOST,
-        password: config.DB_PASSWORD,
-        port: config.DB_PORT,
-        database: config.DB_NAME,
+        username: process.env.DB_USER,
+        host: process.env.DB_HOST,
+        password: process.env.DB_PASSWORD,
+        port: process.env.DB_PORT,
+        database: process.env.DB_NAME,
       }),
   entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
   synchronize: Boolean(process.env.DB_SYNC),
@@ -40,4 +40,4 @@ export const ormConfig: DataSourceOptions = {
   migrations: [__dirname + '/../migrations/**{.ts,.js}'],
 };
 
-export const AppDataSource = new DataSource(ormConfig);
+export const AppDataSource = new DataSource(ormConfig as DataSourceOptions);
