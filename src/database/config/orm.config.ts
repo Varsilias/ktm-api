@@ -1,4 +1,4 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource, DataSourceOptions, DatabaseType } from 'typeorm';
 import { ConfigService } from '../../config/config.service';
 import 'dotenv/config';
 
@@ -22,7 +22,7 @@ const config = new ConfigService();
 // };
 
 export const ormConfig = {
-  type: process.env.DB_TYPE as unknown as 'postgres', // change to database vendor of choice
+  type: process.env.DB_TYPE as DatabaseType, // change to database vendor of choice
   ...(process.env.NODE_ENV === 'production'
     ? { url: process.env.DB_URL }
     : {
