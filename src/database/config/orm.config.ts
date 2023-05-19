@@ -21,9 +21,11 @@ const config = new ConfigService();
 //   migrations: [__dirname + '/../migrations/**{.ts,.js}'],
 // };
 
+const inProduction = process.env.NODE_ENV === 'production';
+
 export const ormConfig = {
   type: process.env.DB_TYPE as DatabaseType, // change to database vendor of choice
-  ...(process.env.NODE_ENV === 'production'
+  ...(inProduction
     ? { url: process.env.DB_URL }
     : {
         username: process.env.DB_USER,
@@ -34,10 +36,15 @@ export const ormConfig = {
       }),
   entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
   synchronize: Boolean(process.env.DB_SYNC),
-  logging: !(process.env.NODE_ENV === 'production')
-    ? ['error', 'migration', 'warn']
-    : false,
+  logging: !inProduction ? ['error', 'migration', 'warn'] : false,
   migrations: [__dirname + '/../migrations/**{.ts,.js}'],
+  ...(inProduction
+    ? {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      }
+    : undefined),
 } as DataSourceOptions;
 
 export const AppDataSource = new DataSource(ormConfig);
