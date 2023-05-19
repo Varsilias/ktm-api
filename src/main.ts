@@ -7,7 +7,7 @@ import { CustomExceptionFilter } from './common/filters/custom-exception.filter'
 import { TransformInterceptor } from './common/interceptors/response-transform.interceptor';
 
 async function bootstrap() {
-  const config = new ConfigService();
+  // const config = new ConfigService();
   const app = await NestFactory.create(AppModule);
 
   const reflector = app.get(Reflector);
@@ -22,6 +22,6 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
 
-  await app.listen(config.PORT);
+  await app.listen(process.env.PORT);
 }
 bootstrap();
