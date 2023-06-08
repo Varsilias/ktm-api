@@ -13,6 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Create .env file from Secret
+        id: import-env
+        run: |
+          echo "${{ secrets.ENV_FILE }}" >> .env
+      - uses: cardinalby/export-env-action@v2
+        with:
+          mask: true
+          envFile: '.env'
+
       - name: Build the docker image
         run: docker build -t $IMAGE_TAG .
 
