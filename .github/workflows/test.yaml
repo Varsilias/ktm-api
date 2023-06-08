@@ -32,5 +32,5 @@ jobs:
       - name: Run ESLint
         run: docker run $IMAGE_TAG:$ENVIRONMENT sh -c 'npm run lint'
 
-      - name: Run E2E tests
+      - name: Run Unit tests
         run: docker run $IMAGE_TAG:$ENVIRONMENT sh -c 'npm run test'
