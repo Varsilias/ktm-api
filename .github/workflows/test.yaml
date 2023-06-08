@@ -33,4 +33,4 @@ jobs:
         run: docker run $IMAGE_TAG:$ENVIRONMENT sh -c 'npm run lint'
 
       - name: Run E2E tests
-        run: docker run $IMAGE_TAG:$ENVIRONMENT -c 'npm run test:e2e'
+        run: docker run $IMAGE_TAG:$ENVIRONMENT sh -c 'npm run test:e2e'

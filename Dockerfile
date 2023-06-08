@@ -13,7 +13,10 @@ RUN npm ci
 COPY --chown=node:node . .
 
 RUN npm run build 
-# ---
+
+
+
+# --- Production
 
 FROM node:16-alpine
 
