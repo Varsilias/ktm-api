@@ -26,6 +26,7 @@
     "migration:run": "npm run typeorm migration:run -- -d src/database/config/orm.config.ts"
   },
   "dependencies": {
+    "@golevelup/ts-jest": "^0.3.7",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.0.3",
@@ -83,11 +84,14 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "modulePaths": [
+      "<rootDir>"
+    ],
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
