@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsArray } from 'class-validator';
+import { IsString, IsOptional, IsArray } from 'class-validator';
 export class UpdateBoardDto {
   @IsString({ message: 'Board name must be a string' })
   @IsOptional()

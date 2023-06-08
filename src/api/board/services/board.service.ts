@@ -8,7 +8,6 @@ import { BadRequestException } from 'src/common/exceptions/bad-request.exception
 import { ServerErrorException } from 'src/common/exceptions/server-error.exception';
 import { PostgresError } from 'src/common/helpers/enum';
 import { ColumnService } from 'src/api/column/services/column.service';
-import { ColumnEntity } from 'src/api/column/entities/column.entity';
 
 @Injectable()
 export class BoardService {

@@ -11,6 +11,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @Public()
   async findAll(@CurrentUser() iuser: IDecoratorUser) {
     console.log(iuser);
     const user = await this.userService.findUserBy({

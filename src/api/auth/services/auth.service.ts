@@ -18,7 +18,7 @@ export class AuthService {
     try {
       const { password: userPasssword } = signUpDto;
       const hash = await Utils.hashPassword(userPasssword);
-      const { password, ...user } = await this.userService.createUser({
+      const user = await this.userService.createUser({
         ...signUpDto,
         password: hash,
       });

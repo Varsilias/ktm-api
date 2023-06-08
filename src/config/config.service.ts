@@ -43,10 +43,8 @@ export class ConfigService {
   }
 
   private static parseEnvVariables() {
-    // const envFile = path.resolve(`${process.cwd()}/.env`);
-    // return dotenv.parse(fs.readFileSync(envFile));
-    const { error, parsed } = dotenv.config();
-    return parsed;
+    const envFile = path.resolve(`${process.cwd()}/.env`);
+    return dotenv.parse(fs.readFileSync(envFile));
   }
 
   private static validateConfig(envConfig: EnvConfig) {
@@ -54,12 +52,12 @@ export class ConfigService {
       allowUnknown: true,
     });
 
-    // if (error) {
-    //   throw new AppException(
-    //     `Config validation error: ${error.message}`,
-    //     AppStatus.CONFIGURATION_ERROR,
-    //   );
-    // }
+    if (error) {
+      throw new AppException(
+        `Config validation error: ${error.message}`,
+        AppStatus.CONFIGURATION_ERROR,
+      );
+    }
 
     return validatedEnvValues;
   }

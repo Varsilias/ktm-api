@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
@@ -15,7 +14,6 @@ import {
   IDecoratorUser,
 } from 'src/common/decorators/current-user.decorator';
 import { DeleteColumnDto } from '../dto/delete-column.dto';
-import { GetBoardColumnsDto } from '../dto/get-board-columns.dto';
 import { CreateColumnDto } from '../dto/create-column.dto';
 import { UpdateColumnDto } from '../dto/update-column.dto';
 

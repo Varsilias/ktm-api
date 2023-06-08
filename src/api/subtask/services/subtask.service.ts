@@ -94,7 +94,7 @@ export class SubtaskService {
         return subtask;
       }
 
-      let subtask = await this.findOne(subtaskPublicId);
+      const subtask = await this.findOne(subtaskPublicId);
       const result = await this.subtaskRepository.update(
         { id: subtask.id },
         {

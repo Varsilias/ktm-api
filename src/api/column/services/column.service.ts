@@ -7,7 +7,6 @@ import { Repository } from 'typeorm';
 import { BadRequestException } from 'src/common/exceptions/bad-request.exception';
 import { ServerErrorException } from 'src/common/exceptions/server-error.exception';
 import { PostgresError } from 'src/common/helpers/enum';
-import { ColumnEntity } from '../entities/column.entity';
 import { IDecoratorUser } from 'src/common/decorators/current-user.decorator';
 import { DeleteColumnDto } from '../dto/delete-column.dto';
 import { GetBoardColumnsDto } from '../dto/get-board-columns.dto';

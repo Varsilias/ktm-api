@@ -7,6 +7,13 @@ import { SubtaskModule } from './subtask/subtask.module';
 import { ColumnModule } from './column/column.module';
 
 @Module({
-  imports: [AuthModule, UserModule, BoardModule, TaskModule, SubtaskModule, ColumnModule],
+  imports: [
+    AuthModule,
+    UserModule,
+    BoardModule,
+    TaskModule,
+    SubtaskModule,
+    ColumnModule,
+  ],
 })
 export class ApiModule {}

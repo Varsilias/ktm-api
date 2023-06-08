@@ -18,7 +18,9 @@ import { PassportModule } from '@nestjs/passport';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: process.env.JWT_SECRET || config.JWT_SECRET,
-        signOptions: { expiresIn: `${process.env.JWT_SECRET}m` || `${config.JWT_EXPIRY}m` },
+        signOptions: {
+          expiresIn: `${config.JWT_EXPIRY}m`,
+        },
       }),
     }),
   ],

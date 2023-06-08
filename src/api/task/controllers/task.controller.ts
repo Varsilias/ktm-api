@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Query,
@@ -12,7 +11,6 @@ import {
 import { TaskService } from '../services/task.service';
 import { CreateTaskDto } from '../dto/create-task.dto';
 import { UpdateTaskDto } from '../dto/update-task.dto';
-import { GetColumnTasksDto } from '../dto/get-column-tasks.dto';
 
 @Controller('tasks')
 export class TaskController {

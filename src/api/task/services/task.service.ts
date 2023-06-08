@@ -104,7 +104,7 @@ export class TaskService {
       //   task,
       // });
 
-      const updateResult = await this._taskRepository.update(
+      await this._taskRepository.update(
         { id: task.id },
         {
           title: updateTaskDto.title,
