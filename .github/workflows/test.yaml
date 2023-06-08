@@ -18,6 +18,7 @@ jobs:
         id: import-env
         run: |
           echo "${{ secrets.ENV_FILE }}" >> .env
+          echo .env
       - uses: cardinalby/export-env-action@v2
         with:
           mask: false
