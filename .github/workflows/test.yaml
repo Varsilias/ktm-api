@@ -1,6 +1,6 @@
 name: Test KTMCORE Application
 
-on: [push]
+on: [push, pull_request]
 
 env:
   IMAGE_TAG: ktm-core
