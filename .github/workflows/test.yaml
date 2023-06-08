@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   IMAGE_TAG: ktm-core
+  ENVIRONMENT: test
 
 jobs:
   tests:
@@ -19,17 +20,17 @@ jobs:
           echo "${{ secrets.ENV_FILE }}" >> .env
       - uses: cardinalby/export-env-action@v2
         with:
-          mask: true
+          mask: false
           envFile: '.env'
 
       - name: Build the docker image
-        run: docker build -t $IMAGE_TAG .
+        run: docker build -t $IMAGE_TAG:$ENVIRONMENT --target=builder .
 
       - name: Run Prettier
-        run: docker run $IMAGE_TAG sh -c 'npm run format'
+        run: docker run $IMAGE_TAG:$ENVIRONMENT sh -c 'npm run format'
 
       - name: Run ESLint
-        run: docker run $IMAGE_TAG sh -c 'npm run lint'
+        run: docker run $IMAGE_TAG:$ENVIRONMENT sh -c 'npm run lint'
 
       - name: Run E2E tests
-        run: docker run $IMAGE_TAG sh -c 'npm run test:e2e'
+        run: docker run $IMAGE_TAG:$ENVIRONMENT -c 'npm run test:e2e'
