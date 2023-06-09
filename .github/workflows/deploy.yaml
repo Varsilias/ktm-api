@@ -34,8 +34,6 @@ jobs:
         id: import-env
         run: |
           echo "${{ secrets.PROD_ENV_FILE }}" >> .env
-          echo "cat .env"
-          cat .env
 
           echo "ls -a ."
           ls -a .
@@ -48,13 +46,13 @@ jobs:
           mask: false
           envFile: '.env'
 
-      # - name: Build, tag, and push docker image to Amazon ECR Public
-      #   env:
-      #     ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
-      #     ECR_REGISTRY_ALIAS: l9o7w9h7
-      #     ECR_REPOSITORY: ktm-core
-      #     IMAGE_TAG: ${{ github.sha }}
-      #   run: |
-      #     docker build -t $IMAGE_TAG .
-      #     docker tag $IMAGE_TAG:latest $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$IMAGE_TAG:latest
-      #     docker push $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:latest
+      - name: Build, tag, and push docker image to Amazon ECR Public
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
+          ECR_REGISTRY_ALIAS: l9o7w9h7
+          ECR_REPOSITORY: ktm-core
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $IMAGE_TAG .
+          docker tag $IMAGE_TAG:latest $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$IMAGE_TAG:latest
+          docker push $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:latest
