@@ -51,7 +51,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
           ECR_REGISTRY_ALIAS: l9o7w9h7
           ECR_REPOSITORY: ktm-core
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ktm-core
         run: |
           docker build -t $IMAGE_TAG .
           docker tag $IMAGE_TAG:latest $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$IMAGE_TAG:latest
