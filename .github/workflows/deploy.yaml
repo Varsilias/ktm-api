@@ -34,6 +34,7 @@ jobs:
         id: import-env
         run: |
           echo "${{ secrets.PROD_ENV_FILE }}" >> .env.production
+          echo "${{ secrets.TEST_ENV_FILE }}" >> .env
 
           echo "ls -a ."
           ls -a .
