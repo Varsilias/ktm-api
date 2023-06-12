@@ -43,7 +43,8 @@ export class ConfigService {
   }
 
   private static parseEnvVariables() {
-    const envFile = path.resolve(`${process.cwd()}/.env`);
+    const envFile =
+      process.env.NODE_ENV === 'development' ? '.env' : '.env.production';
     return dotenv.parse(fs.readFileSync(envFile));
   }
 

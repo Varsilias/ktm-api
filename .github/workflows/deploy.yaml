@@ -33,7 +33,7 @@ jobs:
       - name: Create .env file from Secret
         id: import-env
         run: |
-          echo "${{ secrets.PROD_ENV_FILE }}" >> .env
+          echo "${{ secrets.PROD_ENV_FILE }}" >> .env.production
 
           echo "ls -a ."
           ls -a .
