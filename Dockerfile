@@ -33,5 +33,6 @@ COPY --from=builder --chown=node:node /home/node/.env.production ./
 
 RUN npm prune --production
 
+EXPOSE 3000
 
 CMD ["npm", "start"]
