@@ -26,6 +26,7 @@
     "migration:run": "npm run typeorm migration:run -- -d src/database/config/orm.config.ts"
   },
   "dependencies": {
+    "@golevelup/ts-jest": "^0.3.8",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.0.3",
